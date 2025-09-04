@@ -52,11 +52,13 @@ poetry run uvicorn app.main:app --reload
 Visit http://127.0.0.1:8000 to see the API documentation.
 
 ## API Endpoints
-| Method | Endpoint          | Description                  |
-| ------ | ----------------- | ---------------------------- |
-| GET    | `/`               | Returns a welcome message    |
-| GET    | `/weather`        | Retrieves weather data       |
-| GET    | `/weather/{city}` | Retrieves weather for a city |
+| Endpoint                      | Method | Description                                                               |
+| ----------------------------- | ------ | ------------------------------------------------------------------------- |
+| `/`                           | GET    | Shows a brief project description, list of endpoints, and link to GitHub. |
+| `/health/`                    | GET    | Returns a welcome message and status code 200.                            |
+| `/predict/rain/`              | GET    | Predicts whether it will rain 7 days from a given date.                   |
+| `/predict/precipitation/fall` | GET    | Predicts cumulative precipitation (in mm) within the next 3 days.         |
+
 
 Detailed documentation is available automatically at http://127.0.0.1:8000/docs
  via Swagger UI.
