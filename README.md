@@ -61,7 +61,7 @@ Visit http://127.0.0.1:8000 to see the API documentation.
 Detailed documentation is available automatically at http://127.0.0.1:8000/docs
  via Swagger UI.
 
-## Docker Deployment
+## Docker Run Locally
 
 1. Build the Docker image:
 
@@ -74,6 +74,33 @@ docker build -t meteo-api-app .
 ```bash
 docker run -d -p 80:80 meteo-api-app
 ```
+
+3. Access the application at http://localhost
+
+## Docker Deployment
+
+1.  Login to Docker Hub:
+```bash
+ docker login
+```
+
+2. Build the Docker image (specify platform if needed, e.g. linux/amd64):
+```bash
+  docker build --platform linux/amd64 -t nelkit792/meteo-api-app-25609227:latest . 
+```
+
+3. Push the image to Docker Hub:
+```bash
+ docker push nelkit792/meteo-api-app-25609227:latest
+```
+
+5. Deploy on Render.com using an existing Docker image:
+   - Select "Existing Image" as the deployment method.
+   - Provide the image URL: `docker.io/nelkit792/meteo-api-app-25609227:latest`
+
+
+
+
 
 
 
