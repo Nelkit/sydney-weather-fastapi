@@ -31,7 +31,7 @@ cd AMLA-AT2-meteo-api-25609227
  pyenv local  3.11.4
 ```
 
-3. activate the poetry environment
+3. Activate the poetry environment
 
 ```bash
 poetry env activate
@@ -61,17 +61,20 @@ Visit http://127.0.0.1:8000 to see the API documentation.
 Detailed documentation is available automatically at http://127.0.0.1:8000/docs
  via Swagger UI.
 
-## Development
+## Docker Deployment
 
-- Use --reload for automatic server restart during development.
-
-- Place all your FastAPI routes inside the app/ folder.
-
-- Add dependencies via Poetry:
+1. Build the Docker image:
 
 ```bash 
-poetry add <package-name>
+docker build -t meteo-api-app .
 ```
+
+2. Run the Docker container:
+
+```bash
+docker run -d -p 80:80 meteo-api-app
+```
+
 
 
 ## License
