@@ -20,6 +20,20 @@ readme = "README.md"
 python = "==3.11.4"
 fastapi = "^0.116.1"
 uvicorn = "^0.35.0"
+pandas = "2.2.2"
+joblib = "^1.5.2"
+scikit-learn = "1.5.1"
+cloudpickle = "^3.1.1"
+dskit-uts25609227 = "^2025.0.1.27"
+ipython = "^9.5.0"
+openmeteo-requests = "^1.7.2"
+requests-cache = "^1.2.1"
+retry-requests = "^2.0.0"
+
+[[tool.poetry.source]]
+name = "test-pypi"
+url = "https://test.pypi.org/simple/"
+priority = "supplemental"
 
 
 
