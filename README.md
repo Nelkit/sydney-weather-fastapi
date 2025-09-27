@@ -110,4 +110,9 @@ docker run -d -p 80:80 meteo-api-app
 
 This project is licensed under the MIT License.
 
+## Tailwind CSS
+This project uses Tailwind CSS for styling. To build the CSS, run:
 
+```bash
+ npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css --watch --pol
+```

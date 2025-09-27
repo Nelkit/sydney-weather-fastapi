@@ -85,7 +85,7 @@ class RainLagTransformer(BaseEstimator, TransformerMixin):
     def transform(self, X):
         df = X.copy()
         for lag in self.lags:
-            df[f"rain_sum_in_{lag}d"] = df["rain_sum"].shift(lag).fillna(0)
+            df[f"rainfall_lag_{lag}d"] = df["rain_sum"].shift(lag).fillna(0)
         return df
 
 
@@ -100,7 +100,7 @@ class RainRollingTransformer(BaseEstimator, TransformerMixin):
     def transform(self, X):
         df = X.copy()
         for window in self.windows:
-            df[f"rain_sum_in_{window}d"] = df["rain_sum"].rolling(window=window).sum().fillna(0)
+            df[f"rain_last_{window}d"] = df["rain_sum"].rolling(window=window).sum().fillna(0)
         return df
 
 # TEMPERATURE & HUMIDITY TRANSFORMER

@@ -1,0 +1,19 @@
+<html lang="en">
+    <head>
+        <title>AMLA-AT2 Meteo API</title>
+        <link href="{{ url_for('static', path='/css/output.css') }}" rel="stylesheet">
+    </head>
+    <body class="bg-amber-600">
+    <h1>AMLA-AT2 Meteo API</h1>
+    <p>This API provides weather predictions for Sydney using machine learning models trained on historical Open-Meteo data.</p>
+    <h2>Available Endpoints:</h2>
+    <ul>
+        <li><a>/</a> - Project description and endpoints</li>
+        <li><a href="/health/">/health/</a> - API health check</li>
+        <li><a href="/predict/rain/?date=YYYY-MM-DD">/predict/rain/?date=YYYY-MM-DD</a> - Predict if it will rain in exactly 7 days</li>
+        <li><a href="/predict/precipitation/fall?date=YYYY-MM-DD">/predict/precipitation/fall?date=YYYY-MM-DD</a> - Predict cumulative precipitation over the next 3 days</li>
+    </ul>
+    <h2>Repository:</h2>
+    <p><a href="https://github.com/Nelkit/AMLA-AT2-meteo-api-25609227">GitHub Repository</a></p>
+    </body>
+</html>

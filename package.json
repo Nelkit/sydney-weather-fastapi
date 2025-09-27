@@ -1,0 +1,25 @@
+{
+  "name": "amla-at2-meteo-api-25609227",
+  "version": "1.0.0",
+  "description": "**Description:**   FastAPI application that provides weather data through REST API endpoints. Fetches information from external sources and serves it to clients for easy access and integration.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://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@github.com/Nelkit/AMLA-AT2-meteo-api-25609227.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nelkit/AMLA-AT2-meteo-api-25609227/issues"
+  },
+  "homepage": "https://github.com/Nelkit/AMLA-AT2-meteo-api-25609227#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.13"
+  }
+}

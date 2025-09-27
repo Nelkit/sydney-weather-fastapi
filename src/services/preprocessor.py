@@ -9,63 +9,47 @@ class DataPreprocessor():
         self.daily_vars = daily_vars
 
     def preprocess_weather_data(self):
-        """Preprocess daily weather data focusing on precipitation metrics.
+        """Preprocess Open-Meteo JSON into hourly and daily DataFrames.
 
         Returns:
-            pd.DataFrame: Processed daily weather data
+            Tuple[pd.DataFrame, pd.DataFrame]: (hourly_dataframe, daily_dataframe)
         """
-        response = self.data[0]
-        print(f"Coordinates: {response.Latitude()}°N {response.Longitude()}°E")
-        print(f"Elevation: {response.Elevation()} m asl")
-        print(f"Timezone: {response.Timezone()} {response.TimezoneAbbreviation()}")
-        print(f"Timezone difference to GMT+0: {response.UtcOffsetSeconds()}s")
+        payload = self.data
 
-        # Process hourly data
-        hourly = response.Hourly()
-        hourly_variables = {var: idx for idx, var in enumerate(self.hourly_vars)}
-        hourly_data = {"date": pd.date_range(
-            start=pd.to_datetime(hourly.Time(), unit="s", utc=True),
-            end=pd.to_datetime(hourly.TimeEnd(), unit="s", utc=True),
-            freq=pd.Timedelta(seconds=hourly.Interval()),
-            inclusive="left"
-        )}
+        # Hourly data
+        hourly_payload = payload.get("hourly", {})
+        hourly_times = hourly_payload.get("time", [])
+        hourly_dataframe = pd.DataFrame()
+        if hourly_times:
+            hourly_dataframe["date"] = pd.to_datetime(hourly_times, utc=True)
+        else:
+            hourly_dataframe["date"] = pd.to_datetime([])
 
-        # Extract all hourly variables dynamically
-        for var_name, idx in hourly_variables.items():
-            hourly_data[var_name] = hourly.Variables(idx).ValuesAsNumpy()
+        for var_name in self.hourly_vars:
+            values = hourly_payload.get(var_name)
+            # Ensure column exists even if missing from response
+            hourly_dataframe[var_name] = values if values is not None else pd.Series([pd.NA] * len(hourly_dataframe))
 
-        hourly_dataframe = pd.DataFrame(data=hourly_data)
+        # Daily data
+        daily_payload = payload.get("daily", {})
+        daily_times = daily_payload.get("time", [])
+        daily_dataframe = pd.DataFrame()
+        if daily_times:
+            # Daily dates are at midnight; parse as date-time for consistency
+            daily_dataframe["date"] = pd.to_datetime(daily_times, utc=True)
+        else:
+            daily_dataframe["date"] = pd.to_datetime([])
 
-        daily = response.Daily()
-        daily_variables = {var: idx for idx, var in enumerate(self.daily_vars)}
+        for var_name in self.daily_vars:
+            values = daily_payload.get(var_name)
+            daily_dataframe[var_name] = values if values is not None else pd.Series([pd.NA] * len(daily_dataframe))
 
-        # Initialize daily data with date range
-        daily_data = {"date": pd.date_range(
-            start=pd.to_datetime(daily.Time(), unit="s", utc=True),
-            end=pd.to_datetime(daily.TimeEnd(), unit="s", utc=True),
-            freq=pd.Timedelta(seconds=daily.Interval()),
-            inclusive="left"
-        )}
-
-        # Extract all variables dynamically
-        for var_name, idx in daily_variables.items():
-            daily_data[var_name] = daily.Variables(idx).ValuesAsNumpy()
-
-        daily_dataframe = pd.DataFrame(data=daily_data)
-
-        # Create and return dataframe
         return hourly_dataframe, daily_dataframe
 
-def aggregate_rain_or_not_dataframe(df_hourly, df_daily):
-    """Aggregate hourly and daily dataframes to create features for rain or not prediction.
+def join_rain_data(df_daily, df_hourly):
+    df_daily["date"] = pd.to_datetime(df_daily["date"]).dt.normalize()
+    df_hourly["date"] = pd.to_datetime(df_hourly["date"]).dt.normalize()
 
-    Args:
-        df_hourly (pd.DataFrame): Hourly weather data
-        df_daily (pd.DataFrame): Daily weather data
-
-    Returns:
-        pd.DataFrame: Aggregated features dataframe
-    """
     agg_dict = {
         "temperature_2m": ["mean", "min", "max", "std"],
         "dew_point_2m": ["mean", "min", "max"],
@@ -94,21 +78,14 @@ def aggregate_rain_or_not_dataframe(df_hourly, df_daily):
     df_hourly_agg.replace([np.inf, -np.inf], np.nan, inplace=True)
     df_hourly_agg.fillna(0, inplace=True)
 
-    combined_df = pd.merge(df_hourly_agg, df_daily, on="date", how="inner")
-    combined_df.fillna(0, inplace=True)
+    df_combined = pd.merge(df_daily, df_hourly_agg, on="date", how="inner")
 
-    return combined_df
+    return df_combined
 
-def aggregate_precipitation_fall_dataframe(df_hourly, df_daily):
-    """Aggregate hourly and daily dataframes to create features for precipitation fall prediction.
+def join_precipitation_data(df_daily, df_hourly):
+    df_daily["date"] = pd.to_datetime(df_daily["date"]).dt.normalize()
+    df_hourly["date"] = pd.to_datetime(df_hourly["date"]).dt.normalize()
 
-    Args:
-        df_hourly (pd.DataFrame): Hourly weather data
-        df_daily (pd.DataFrame): Daily weather data
-
-    Returns:
-        pd.DataFrame: Aggregated features dataframe
-    """
     agg_dict = {
         "precipitation": ["sum", "mean"],
         "rain": ["sum", "mean"],
@@ -148,7 +125,10 @@ def aggregate_precipitation_fall_dataframe(df_hourly, df_daily):
     df_hourly_agg.replace([np.inf, -np.inf], np.nan, inplace=True)
     df_hourly_agg.fillna(0, inplace=True)
 
-    combined_df = pd.merge(df_hourly_agg, df_daily, on="date", how="inner")
+    daily_cols = [col for col in df_daily.columns if col != "date"]
+    df_daily_renamed = df_daily.rename(columns={col: f"d_{col}" for col in daily_cols})
 
-    return combined_df
+    df_combined = pd.merge(df_daily_renamed, df_hourly_agg, on="date", how="inner")
+
+    return df_combined
 
