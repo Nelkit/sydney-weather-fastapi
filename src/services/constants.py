@@ -4,7 +4,7 @@ DEFAULT_TIMEZONE = "Australia/Sydney"
 BASE_API_URL = "https://archive-api.open-meteo.com/v1"
 
 class RainOrNot:
-	MODEL_PATH = "models/rain_or_not/best_model_v7.rc1.joblib"
+	MODEL_PATH = "models/rain_or_not/best_model_v7.rc2.joblib"
 
 	HOURLY_VARS = [
 		"temperature_2m",
@@ -107,7 +107,7 @@ class RainOrNot:
 	]
 
 class Precipitation:
-	MODEL_PATH= "models/precipitation_fall/best_model_v2.rc1.joblib"
+	MODEL_PATH= "models/precipitation_fall/best_model_v3.rc2.joblib"
 
 	HOURLY_VARS = [
 		"apparent_temperature",
