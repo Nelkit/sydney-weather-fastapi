@@ -1,4 +1,3 @@
-import requests_cache
 from retry_requests import retry
 import requests
 from src.services.constants import BASE_API_URL, DEFAULT_TIMEZONE
