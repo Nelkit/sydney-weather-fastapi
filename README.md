@@ -98,7 +98,7 @@ docker run -d -p 80:80 meteo-api-app
 
 5. Deploy on Render.com using an existing Docker image:
    - Select "Existing Image" as the deployment method.
-   - Provide the image URL: `docker.io/nelkit792/meteo-api-app-25609227:latest`
+   - Provide the image URL: `docker.io/nelkit792/meteo-api-app-25609227`
 
 
 
