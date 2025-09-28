@@ -32,7 +32,18 @@ async def root(request: Request):
 
 @app.get("/health/")
 async def health_check():
-	return {"status": "ok"}
+	return {
+		"status": "ok",
+		"message": "The service is running.",
+		"models": {
+			"rain_or_not": {
+				"version": RainOrNot.MODEL_VERSION,
+			},
+			"precipitation_fall": {
+				"version": Precipitation.MODEL_VERSION,
+			}
+		}
+	}
 
 @app.get("/predict/rain/")
 async def predict_rain(date: str):
