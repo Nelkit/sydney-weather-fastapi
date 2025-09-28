@@ -88,12 +88,12 @@ docker run -d -p 80:80 meteo-api-app
 
 2. Build the Docker image (specify platform if needed, e.g. linux/amd64):
 ```bash
-  docker build --platform linux/amd64 -t nelkit792/meteo-api-app-25609227:latest . 
+  docker build --platform linux/amd64 -t nelkit792/meteo-api-app-25609227 . 
 ```
 
 3. Push the image to Docker Hub:
 ```bash
- docker push nelkit792/meteo-api-app-25609227:latest
+ docker push nelkit792/meteo-api-app-25609227
 ```
 
 5. Deploy on Render.com using an existing Docker image:

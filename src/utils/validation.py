@@ -15,7 +15,7 @@ def validate_date(date_str: str) -> date_type:
         )
 
 
-def validate_date_range(date_str: str, earliest_date: str, days: int = 3) -> date_type:
+def validate_date_range(date_str: str, earliest_date: str, days: int = 2) -> date_type:
     """
     Validate date and check if it's within acceptable range.
     Range: from earliest_date up to 2 days before today
@@ -60,13 +60,13 @@ def validate_date_range(date_str: str, earliest_date: str, days: int = 3) -> dat
             }
         )
 
-    # Check if date is too recent (less than 3 days ago)
+    # Check if date is too recent (less than 2 days ago)
     if validated_date > latest_allowed:
         raise HTTPException(
             status_code=400,
             detail={
                 "error": "Date too recent",
-                "reason": f"Date must be at least 3 days before today (on or before {latest_allowed.strftime('%Y-%m-%d')})"
+                "reason": f"Date must be at least 2 days before today (on or before {latest_allowed.strftime('%Y-%m-%d')})"
             }
         )
 
