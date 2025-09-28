@@ -2,7 +2,18 @@ from datetime import datetime, date as date_type, timedelta
 from fastapi import HTTPException
 
 def validate_date(date_str: str) -> date_type:
-    """Validate and parse date string"""
+    """
+    Validate and parse a date string in YYYY-MM-DD format.
+
+    Args:
+        date_str: Date string to validate.
+
+    Returns:
+        date: Parsed date object.
+
+    Raises:
+        HTTPException: If the date string is not in the correct format.
+    """
     try:
         return datetime.strptime(date_str, "%Y-%m-%d").date()
     except ValueError:

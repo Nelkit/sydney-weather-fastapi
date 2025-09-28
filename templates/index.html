@@ -10,12 +10,27 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
+            background-image: url("{{ url_for('static', path='/img/sydney.webp') }}"); /* ruta relativa desde static/css */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+            background-attachment: fixed;
+            bg-image: linear-gradient()
+        }
+
+        /* Overlay usando pseudo-elemento */
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+            z-index: 0;
         }
 
         .glass {
-            background: rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.35);
             backdrop-filter: blur(10px);
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.18);
@@ -53,10 +68,10 @@
         }
     </style>
 </head>
-<body class="min-h-screen pt-10 p-4">
+<body class="min-h-screen pt-10 p-4 relative" >
     <div class="w-full max-w-7xl mx-auto">
         <!-- Header -->
-        <div class="text-center mb-8 ">
+        <div class="text-center mb-8 relative z-10">
             <h1 class="text-4xl font-bold text-white mb-2">🌦️ Open Meteo AI Weather Prediction API</h1>
             <p class="text-white/80 text-lg">AI-powered weather forecasting for Sydney, Australia</p>
         </div>
@@ -148,15 +163,24 @@
 
                     <h4 class="text-white font-semibold mb-2">Server Health</h4>
                     <p class="text-white/80 text-sm mb-4">
-                        Returning status code 200 with the status of the server.
+                        Returns a welcome message and current server status and the last models version.
                     </p>
 
                     <div>
                         <h5 class="text-white/90 font-medium text-sm mb-2">Output Format:</h5>
                         <div class="bg-gray-800/50 rounded p-3 text-xs font-mono text-gray-300">
                             {<br>
-                            &nbsp;&nbsp;"status": "ok"<br>
-                            }
+                              &nbsp;"status": "ok",<br>
+                              &nbsp;"message": "The service is running.",<br>
+                              &nbsp;"models": {<br>
+                              &nbsp;&nbsp;"rain_or_not": {<br>
+                              &nbsp;&nbsp;&nbsp;"version": "v7.rc2",<br>
+                              &nbsp;&nbsp;},<br>
+                              &nbsp;&nbsp;"precipitation_fall": {<br>
+                              &nbsp;&nbsp;&nbsp;"version": "v3.rc2",<br>
+                              &nbsp;&nbsp;}<br>
+                              &nbsp;}<br>
+                            }<br>
                         </div>
                     </div>
                 </div>

@@ -53,9 +53,9 @@ Visit http://127.0.0.1:8000 to see the API documentation.
 
 ## API Endpoints
 | Endpoint                      | Method | Description                                                               |
-| ----------------------------- | ------ | ------------------------------------------------------------------------- |
+| ----------------------------- | ------ |---------------------------------------------------------------------------|
 | `/`                           | GET    | Shows a brief project description, list of endpoints, and link to GitHub. |
-| `/health/`                    | GET    | Returns a welcome message and status code 200.                            |
+| `/health/`                    | GET    | Returns a welcome message and current server status and the last models version.             |
 | `/predict/rain/`              | GET    | Predicts whether it will rain 7 days from a given date.                   |
 | `/predict/precipitation/fall` | GET    | Predicts cumulative precipitation (in mm) within the next 3 days.         |
 
@@ -100,15 +100,7 @@ docker run -d -p 80:80 meteo-api-app
    - Select "Existing Image" as the deployment method.
    - Provide the image URL: `docker.io/nelkit792/meteo-api-app-25609227`
 
-
-
-
-
-
-
-## License
-
-This project is licensed under the MIT License.
+> Note: The project also includes a GitHub Actions workflow for automated Docker image building and pushing to Docker Hub on every pull request to the main branch.
 
 ## Tailwind CSS
 This project uses Tailwind CSS for styling. To build the CSS, run:
@@ -116,3 +108,9 @@ This project uses Tailwind CSS for styling. To build the CSS, run:
 ```bash
  npx @tailwindcss/cli -i ./static/css/input.css -o ./static/css/output.css --watch --pol
 ```
+
+## License
+
+This project is licensed under the MIT License.
+
+
