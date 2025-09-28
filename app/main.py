@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Request, HTTPException
-from fastapi.staticfiles import StaticFiles
-from starlette.responses import HTMLResponse
 import pandas as pd
 from joblib import load
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from starlette.responses import HTMLResponse
 from src.services.api import OpenMeteoApi
 from src.services.constants import (
 	DEFAULT_LAT,
@@ -16,7 +17,6 @@ from src.services.preprocessor import (
 	join_rain_data,
 	join_precipitation_data
 )
-from fastapi.templating import Jinja2Templates
 from src.utils.validation import validate_date, validate_date_range
 
 app = FastAPI()
@@ -144,8 +144,8 @@ async def predict_precipitation_fall(date: str):
 		"input_date": date,
 		"prediction": {
 			"start_date": date,
-			"end_date_date": end_date,
-			"precipitation_fall": precipitation_fall,
+			"end_date": end_date,
+			"precipitation_fall": f"{precipitation_fall:.4f} mm",
 		}
 	}
 

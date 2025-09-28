@@ -1,5 +1,6 @@
 import requests_cache
 from retry_requests import retry
+import requests
 from src.services.constants import BASE_API_URL, DEFAULT_TIMEZONE
 from src.services.exceptions import OpenMeteoAPIError
 
@@ -12,8 +13,8 @@ class OpenMeteoApi():
 		self.start_date = start_date
 		self.end_date = end_date
 		self.timezone = timezone
-		self.cache_session = requests_cache.CachedSession('.cache', expire_after=-1)
-		self.retry_session = retry(self.cache_session, retries=5, backoff_factor=0.2)
+		self.session = requests.Session()
+		self.retry_session = retry(self.session, retries=5, backoff_factor=0.2)
 		self.url = f"{BASE_API_URL}/archive"
 		# Open-Meteo expects comma-separated strings for variable lists
 		daily_vars_param = ",".join(daily_variables) if isinstance(daily_variables, (list, tuple)) else daily_variables
